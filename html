@@ -1,0 +1,158 @@
+<div style="display: flex; height: 100vh; background-color: #f0f0f0; font-family: Arial, sans-serif;">
+
+
+  <div style="width: 38%; border-right: 1px solid #ccc; padding: 1rem; box-sizing: border-box; background-color: #d9dde5;">
+   
+    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+      <button
+        *ngFor="let filter of filters"
+        (click)="onFilterClick(filter)"
+        [style.backgroundColor]="currentFilter === filter ? '#a8d0ff' : '#cce4ff'"
+        style="
+          border: none;
+          padding: 0.5rem 1.25rem;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 600;
+          color: #003366;
+          box-shadow: 0 2px 5px rgba(0, 51, 102, 0.15);
+          transition: background-color 0.3s ease;
+        "
+      >
+        {{ filter }}
+      </button>
+    </div>
+
+    
+    <div style="max-height: calc(100vh - 120px); overflow-y: auto;">
+      <div
+        *ngFor="let contact of filteredContacts"
+        (click)="onSelectContact(contact)"
+        [style.backgroundColor]="selectedContact?.id === contact.id ? '#a8d0ff' : '#ffffff'"
+        style="
+          cursor: pointer;
+          padding: 0.8rem 1rem;
+          border-radius: 8px;
+          margin-bottom: 0.5rem;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+          transition: background-color 0.3s ease;
+          border-left: 5px solid transparent;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span style="font-weight: 600; color: #003366;">{{ contact.name }}</span>
+        <span
+          *ngIf="isInGroup(contact, 'Favourites')"
+          title="Favourite"
+          style="color: #ffc107; font-size: 1.3rem;"
+        >★</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div style="flex-grow: 1; padding: 1.5rem; box-sizing: border-box; background-color: #fff;">
+    <div *ngIf="selectedContact; else noSelection" style="max-width: 500px;">
+      <h2 style="margin-top: 0; color: #003366;">{{ selectedContact.name }}</h2>
+      <p><strong>Phone:</strong> {{ selectedContact.phone }}</p>
+      <p><strong>Email:</strong> {{ selectedContact.email }}</p>
+      <p><strong>Gender:</strong> {{ selectedContact.gender }}</p>
+      <p><strong>Address:</strong> {{ selectedContact.address }}</p>
+
+      
+      <div style="margin: 1rem 0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <span
+          *ngFor="let group of selectedContact.groups"
+          style="
+            background-color: #a8d0ff;
+            color: #003366;
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+          "
+        >
+          {{ group }}
+        </span>
+      </div>
+
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem;">
+        <button
+          (click)="toggleGroup('Favourites')"
+          [style.backgroundColor]="isInGroup(selectedContact, 'Favourites') ? '#99ccff' : '#cce4ff'"
+          style="
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #003366;
+            box-shadow: 0 2px 5px rgba(0, 51, 102, 0.15);
+            transition: background-color 0.3s ease;
+          "
+        >
+          {{ isInGroup(selectedContact, 'Favourites') ? 'Unfavourite' : 'Mark as Favourite' }}
+        </button>
+
+        <button
+          (click)="toggleGroup('Family')"
+          [style.backgroundColor]="isInGroup(selectedContact, 'Family') ? '#99ccff' : '#cce4ff'"
+          style="
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #003366;
+            box-shadow: 0 2px 5px rgba(0, 51, 102, 0.15);
+            transition: background-color 0.3s ease;
+          "
+        >
+          {{ isInGroup(selectedContact, 'Family') ? 'Remove from Family' : 'Add to Family' }}
+        </button>
+
+        <button
+          (click)="toggleGroup('Friends')"
+          [style.backgroundColor]="isInGroup(selectedContact, 'Friends') ? '#99ccff' : '#cce4ff'"
+          style="
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #003366;
+            box-shadow: 0 2px 5px rgba(0, 51, 102, 0.15);
+            transition: background-color 0.3s ease;
+          "
+        >
+          {{ isInGroup(selectedContact, 'Friends') ? 'Remove from Friends' : 'Add to Friends' }}
+        </button>
+
+        <button
+          (click)="toggleGroup('Classmates')"
+          [style.backgroundColor]="isInGroup(selectedContact, 'Classmates') ? '#99ccff' : '#cce4ff'"
+          style="
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #003366;
+            box-shadow: 0 2px 5px rgba(0, 51, 102, 0.15);
+            transition: background-color 0.3s ease;
+          "
+        >
+          {{ isInGroup(selectedContact, 'Classmates') ? 'Remove from Classmates' : 'Add to Classmates' }}
+        </button>
+      </div>
+    </div>
+
+    <ng-template #noSelection>
+      <p style="color: #555; font-style: italic;">Select a contact to see details.</p>
+    </ng-template>
+  </div>
+
+</div>
